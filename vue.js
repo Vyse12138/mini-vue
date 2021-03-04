@@ -2,6 +2,7 @@
 // 为每一个响应式对象保存其对应 dependencies 的 WeakMap 
 const targetMap = new WeakMap();
 
+// 用于将某一对象上的一个属性加入保存响应式对象的 targetMap 中
 function track(target, key) {
   // 取得目标对象的 depsMap，即保存其 dependencies 的 Map
   let depsMap = targetMap.get(target);
@@ -19,6 +20,7 @@ function track(target, key) {
   dep.add(effect);
 }
 
+// 用于触发 targetMap 中指定对象上指定属性的更新
 function trigger(target, key) {
   // 取得目标对象的 depsMap，即保存其 dependencies 的 Map
   let depsMap = targetMap.get(target);
@@ -32,25 +34,47 @@ function trigger(target, key) {
   if (dep) {
     dep.forEach(effect => {
       effect();
-    });
+    })
   }
+}
+
+// 将对象封装成响应式 Proxy 的函数
+function reactive(target) {
+  // Proxy 的 handler 对象
+  const handler = {
+    // 拦截 get 方法
+    get(target, key, receiver) {
+      let result = Reflect.get(target, key, receiver);
+      // 在 get 时调用 track
+      track(target, key);
+      return result;
+    },
+    set(target, key, value, receiver) {
+      let result = Reflect.set(target, key, value, receiver);
+      let oldValue = target[key];
+      // 在 set 时，若值改变了，调用 trigger 方法
+      if (oldValue != result) {
+        trigger(target, key);
+      }
+      return result;
+    }
+  }
+  // 返回封装后的 Proxy
+  return new Proxy(target, handler);
 }
 
 
 // test code
-let product = {
+let product = reactive({
   price: 5,
   quantity: 2
-}
+});
 let total = 0;
 let effect = () => {
   total = product.price * product.quantity;
 }
 effect()
-track(product,'quantity')
-
 console.log(total)
 
 product.quantity = 22
-trigger(product,'quantity')
 console.log(total)
