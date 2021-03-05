@@ -1,0 +1,23 @@
+{
+  "name": "mini-vue",
+  "version": "1.0.0",
+  "description": "Mimics Vue's reactivity",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "node server.js" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vyse12138/mini-vue.git"
+  },
+  "author": "Jake",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vyse12138/mini-vue/issues"
+  },
+  "homepage": "https://github.com/Vyse12138/mini-vue#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
