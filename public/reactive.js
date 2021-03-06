@@ -2,7 +2,7 @@ const targetMap = new WeakMap(); // 为每一个响应式对象保存其对应 d
 let activeEffect = null; // 当前运行的 effect
 
 // 使只有在调用 effect 时，才会触发 track
-function effect(eff) {
+function watchEffect(eff) {
   activeEffect = eff;
   activeEffect();
   activeEffect = null;
@@ -82,8 +82,8 @@ function ref(raw) {
 // computed 函数，将计算值转换成为响应式
 function computed(getter) {
   let result = ref();
-  effect(() => (result.value = getter()));
+  watchEffect(() => (result.value = getter()));
   return result;
 }
 
-export{ effect, track, trigger, reactive, ref, computed }; 
+export{ watchEffect, track, trigger, reactive, ref, computed }; 

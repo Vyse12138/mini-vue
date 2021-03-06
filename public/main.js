@@ -1,6 +1,53 @@
-import{ effect, track, trigger, reactive, ref, computed } from './reactive.js'
+import { watchEffect, track, trigger, reactive, ref, computed } from './reactive.js'
+import { h, mount, patch} from './render.js'
 
 
+function createApp(component, container) {
+
+}
+
+
+const App = {
+  data: reactive({ 
+    count: 0
+  }),
+  render() {
+    return h('div', { id: "cc" }, App.data.count);
+  }
+}
+
+mount(App, '#app');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// render
+const vdom = h("div", { id: "asd" }, [h("span", { class: "aa" }, "hello")]);
+
+mount(vdom, document.getElementById("app"));
+
+const vdom2 = h("div", { id: "qqq" }, [h("h1", { class: "acca" }, "changed")]);
+
+patch(vdom, vdom2);
+
+
+// reactive
 
 let a = ref([1, 2, 3]);
 console.log(a);
@@ -13,11 +60,7 @@ let total = computed(() => {
   return salePrice.value * product.quantity;
 });
 
-
-console.log(total.value);
-
+watchEffect(() => console.log('total:', total.value))
 product.price = 10;
-console.log(total.value);
 
 product.quantity = 3;
-console.log(total.value);
