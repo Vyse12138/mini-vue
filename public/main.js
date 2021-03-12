@@ -7,36 +7,6 @@ function createApp(component, container) {
 }
 
 
-const App = {
-  data: reactive({ 
-    count: 0
-  }),
-  render() {
-    return h('div', { id: "cc" }, App.data.count);
-  }
-}
-
-mount(App, '#app');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // render
 const vdom = h("div", { id: "asd" }, [h("span", { class: "aa" }, "hello")]);
 
@@ -64,3 +34,25 @@ watchEffect(() => console.log('total:', total.value))
 product.price = 10;
 
 product.quantity = 3;
+
+
+let m = new Map()
+
+m.set(1,24)
+m.set(12,24)
+m.set(13,24)
+
+
+let p =  new Proxy(m,{
+
+  get(target, property, receiver) {
+    console.log(target);
+    return 20;
+  },
+  set(target, property, value, receiver) {
+    console.log(value);
+  }
+})
+
+console.log(p)
+console.log(m)
